@@ -1,0 +1,5 @@
+<input type="text" (keyup)="filterData($event)">
+
+<ul class="item-list" *ngFor="let c of filteredCountries">
+  <li>{{c.name}}</li>
+</ul>
