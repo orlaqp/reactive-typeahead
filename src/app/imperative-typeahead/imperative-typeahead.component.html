@@ -1,4 +1,4 @@
-<input type="text" (keyup)="filterData($event)">
+<input type="text" (keyup)="debounceTimeSearch($event)">
 
 <ul class="item-list" *ngFor="let c of filteredCountries">
   <li>{{c.name}}</li>

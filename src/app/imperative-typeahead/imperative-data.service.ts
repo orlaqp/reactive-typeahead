@@ -5,12 +5,13 @@ import { countries } from '../countries';
 export class ImperativeDataService {
 
   filter(criteria: string) {
-    console.log(criteria);
+    // console.log(criteria);
     return countries.filter(c => c.name.includes(criteria))
   }
 
 
   filterAsync(criteria: string) {
+    console.log('Searching for: ' + criteria);
     const delay = Math.floor(Math.random() * 3);
     
     return new Promise((resolve, reject) => {

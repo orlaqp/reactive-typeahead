@@ -11,22 +11,42 @@ export class ImperativeTypeaheadComponent {
   @Input()
   async = false;
 
+  currentSearch = null;
+  lastSearch = null;
+  private delay = 500;
+  private timeInterval = null;
+
   public filteredCountries: ICountry[];
 
   constructor(private dataService: ImperativeDataService) {
     this.filteredCountries = countries;
   }
 
-  filterData(event) {
-    const criteria = event.target.value;
+  debounceTimeSearch(event) {
+    this.currentSearch = event.target.value;
 
-    if (this.async) {
-      this.dataService.filterAsync(criteria)
-        .then((res: any[]) => this.filteredCountries = res)
+    if (!this.timeInterval) {
+      this.timeInterval = setInterval(() => {
+        if (this.currentSearch == this.lastSearch) {
+          return this.stopInterval();
+        }
+
+        this.filterData(this.currentSearch);
+        this.lastSearch = this.currentSearch;
+        this.stopInterval();
+        
+      }, this.delay);
     }
-    else {
-      this.filteredCountries = this.dataService.filter(criteria);
-    }
+  }
+
+  private filterData(criteria) {
+    this.dataService.filterAsync(criteria)
+        .then((res: any[]) => this.filteredCountries = res);    
+  }
+
+  private stopInterval() {
+    clearInterval(this.timeInterval);
+    this.timeInterval = null;
   }
   
 }
