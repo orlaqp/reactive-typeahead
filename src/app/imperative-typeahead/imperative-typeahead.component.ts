@@ -41,7 +41,10 @@ export class ImperativeTypeaheadComponent {
 
   private filterData(criteria) {
     this.dataService.filterAsync(criteria)
-        .then((res: any[]) => this.filteredCountries = res);    
+        .then((res: any[]) => {
+          if (criteria == this.lastSearch)
+            this.filteredCountries = res;
+        });    
   }
 
   private stopInterval() {
